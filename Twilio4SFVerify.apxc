@@ -4,7 +4,6 @@ public class Twilio4SFVerify {
     @InvocableMethod(label = 'Send Twilio Verify'
         description = 'Sends Verify Message to Recipient')
     public static void sendTwilioVerify() {
-        //Post Example
         TwilioSF.TwilioApiClient client = new TwilioSF.TwilioApiClient();
         client.setBaseUrl('https://verify.twilio.com/');
         client.setApiVersion('v2');
