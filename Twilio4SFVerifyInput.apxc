@@ -1,0 +1,31 @@
+public class Twilio4SFVerifyInput {
+    // This uses the Twilio Helper Class
+    // Create invocable method
+    @InvocableMethod(label = 'Verify SMS Input'
+        description = 'Verify SMS OTP Input')
+    public static List<String> verifySMSInput() {   
+        TwilioSF.TwilioApiClient client = new TwilioSF.TwilioApiClient();
+        client.setBaseUrl('https://verify.twilio.com/');
+        client.setApiVersion('v2');
+        client.addUrlPart('Services');
+        client.addUrlPart('VXXXXXXXXXXXXXXXXXXX'); // Verification Service SID
+        client.addUrlPart('VerificationCheck');
+
+        client.addParam('To', 'Your Number');
+        client.addParam('Code', 'Your OTP Code');
+
+        TwilioSF.TwilioApiClientResponse response = client.doPost();
+        
+		    String status = response.getTwilioJsonParser().get('status').getString(); // status = approved when valid OTP code is accepted
+
+        System.debug('status is: '+ status);
+		    System.debug(response.hasError());
+		    System.debug(response.getErrorMessage());
+		    System.debug(JSON.serializePretty(response.toMap()));
+        
+        // Pass status response back to flow
+        List<String> results = new List<String>();
+        results.add(status);
+        return results;
+    }
+}
