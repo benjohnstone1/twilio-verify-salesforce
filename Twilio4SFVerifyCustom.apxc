@@ -1,0 +1,29 @@
+public class Twilio4SFVerifyCustom {
+    // This does not use the Twilio helper class
+    // First create a remote site setting at: https://api.twilio.com & https://verify.twilio.com
+    public static void sendVerifySMS(){            
+        String phNumber ='Your To Number';        
+        String accountSid = 'ACXXXXXXXXXXXXXXXX';  // This is sensitive information do not hardcode values in production      
+        String token = 'XXXXXXXXXXXXXXXXXX';     // This is sensitive information do not hardcode values in production       
+        String serviceSid = 'VXXXXXXXXXXXXXXX'; // Your verification sid
+        String channel = 'sms';
+        HttpRequest req = new HttpRequest();        
+        req.setEndpoint('https://verify.twilio.com/v2/Services/'+serviceSid+'/Verifications?Channel=sms&To='+phNumber); 
+        req.setMethod('POST');        
+        String VERSION  = '3.2.0';        
+        req.setHeader('X-Twilio-Client', 'salesforce-' + VERSION);        
+        req.setHeader('User-Agent', 'twilio-salesforce/' + VERSION);       
+        req.setHeader('Accept', 'application/json');        
+        req.setHeader('Accept-Charset', 'utf-8');        
+        req.setHeader('Authorization','Basic '+EncodingUtil.base64Encode(Blob.valueOf(accountSid+':' +token)));        
+        req.setBody('To='+EncodingUtil.urlEncode(phNumber,'UTF-8')+'&Channel='+channel);
+        Http http = new Http();        
+        HTTPResponse res = http.send(req);        
+        System.debug(res.getBody());        
+        if(res.getStatusCode()==201) 
+        System.Debug('Message sending Successful');        
+        else{            
+            System.Debug('Message sending Unsuccessful');
+        }        
+    } 
+}
