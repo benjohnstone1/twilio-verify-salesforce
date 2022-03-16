@@ -1,0 +1,21 @@
+public class Twilio4SFVerify {
+    // This uses the Twilio Helper Class
+    // First create a remote site setting at: https://verify.twilio.com
+    @InvocableMethod(label = 'Send Twilio Verify'
+        description = 'Sends Verify Message to Recipient')
+    public static void sendTwilioVerify() {
+        //Post Example
+        TwilioSF.TwilioApiClient client = new TwilioSF.TwilioApiClient();
+        client.setBaseUrl('https://verify.twilio.com/');
+        client.setApiVersion('v2');
+        client.addUrlPart('Services');
+        client.addUrlPart('VA60c5d73e4ec36bfac6c232f2ebf10f0b'); // Verification Service SID
+        client.addUrlPart('Verifications');
+
+        client.addParam('To', 'Your Number');
+        client.addParam('Channel', 'sms');
+
+        TwilioSF.TwilioApiClientResponse response = client.doPost();
+
+    }
+}
